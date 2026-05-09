@@ -1,0 +1,15 @@
+# Build artifacts
+dist/
+*.tar.gz
+manifest.json
+manifest.json.sig
+
+# Local secrets — must NEVER be committed.
+# The trailing `*` matches all suffixes (.pem, .key, .der, ...).
+*.ed25519.priv*
+keys/*.priv.pem
+keys/private/
+
+# OS noise
+.DS_Store
+Thumbs.db

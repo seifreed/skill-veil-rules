@@ -1,0 +1,40 @@
+name: Validate rule packs
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Manifest builds deterministically
+        run: |
+          scripts/build-manifest.sh v0.0.0-ci
+          # Re-run; the manifest must be byte-identical other than the
+          # `generated_at` timestamp, which we strip before diffing.
+          cp manifest.json manifest.first.json
+          sleep 1
+          scripts/build-manifest.sh v0.0.0-ci
+          # Deterministic order + content check (exclude generated_at).
+          jq 'del(.generated_at)' manifest.first.json > a.json
+          jq 'del(.generated_at)' manifest.json > b.json
+          diff -u a.json b.json
+
+      - name: Public key sanity check
+        run: |
+          test -f keys/skill-veil-rules-2026.ed25519.pub.pem
+          test -f keys/skill-veil-rules-2026.ed25519.pub.b64
+
+      - name: No private keys committed
+        run: |
+          if git ls-files | grep -E '\.ed25519\.priv\.' >/dev/null; then
+            echo "::error::a private signing key is checked in"
+            git ls-files | grep -E '\.ed25519\.priv\.'
+            exit 1
+          fi

@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-sign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Resolve version from tag
+        id: version
+        run: echo "version=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+
+      - name: Install GNU tar (already on ubuntu, sanity check)
+        run: tar --version | head -1
+
+      - name: Install coreutils (sha256sum already present on ubuntu)
+        run: sha256sum --version | head -1
+
+      - name: Build manifest
+        run: scripts/build-manifest.sh "${{ steps.version.outputs.version }}"
+
+      - name: Sign manifest
+        env:
+          SKILL_VEIL_RULES_SIGNING_KEY_PEM: ${{ secrets.SKILL_VEIL_RULES_SIGNING_KEY }}
+        run: |
+          if [[ -z "$SKILL_VEIL_RULES_SIGNING_KEY_PEM" ]]; then
+            echo "::error::SKILL_VEIL_RULES_SIGNING_KEY secret not set"
+            exit 1
+          fi
+          KEY_PATH="$(mktemp -t sv-rules-key.XXXXXX)"
+          # Restrict mode BEFORE writing — never let the secret hit
+          # disk world-readable, even briefly.
+          touch "$KEY_PATH"
+          chmod 600 "$KEY_PATH"
+          printf '%s' "$SKILL_VEIL_RULES_SIGNING_KEY_PEM" > "$KEY_PATH"
+          SKILL_VEIL_RULES_SIGNING_KEY="$KEY_PATH" scripts/sign-manifest.sh
+          rm -f "$KEY_PATH"
+
+      - name: Sanity-check signature against committed public key
+        run: |
+          openssl pkeyutl -verify \
+            -pubin -inkey keys/skill-veil-rules-2026.ed25519.pub.pem \
+            -rawin -in manifest.json \
+            -sigfile <(base64 -d manifest.json.sig)
+
+      - name: Build tarball
+        run: scripts/build-tarball.sh "${{ steps.version.outputs.version }}"
+
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/skill-veil-rules-${{ steps.version.outputs.version }}.tar.gz
+            manifest.json
+            manifest.json.sig
+          generate_release_notes: true
+          fail_on_unmatched_files: true
