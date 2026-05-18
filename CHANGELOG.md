@@ -6,6 +6,33 @@ All notable changes to the rule packs are recorded here. Format follows
 
 ## [Unreleased]
 
+### Added
+
+- `taint/taint.yaml` — the internal source→sink exfiltration pack
+  (`ARTIFACT_TAINT_*`). Previously lived only in
+  `skill-veil-core/src/taint_rules.yaml`; this repo is now its
+  canonical source. It uses a distinct schema (`family`/`source`/`sink`,
+  no `when:`) consumed by a bespoke loader in skill-veil, so it lives
+  under `taint/` and is intentionally OUTSIDE the `official/` path that
+  `rules validate` scans.
+- Code-detector rule IDs registered as public API (no YAML rule body —
+  implemented in `skill-veil-core`; their fixtures are the in-repo Rust
+  contract tests, not rules-repo fixtures):
+  - `SKILL_CRYPTO_WALLET_DRAINER_DROPPER` (2-of-3 composite)
+  - `SKILL_C2_BEACON_DROPPER` (2-of-3 composite)
+  - `LLM_CONSENSUS_PROMPT_INJECTION_SUSPECTED` (synthetic
+    cross-provider-flip signal)
+
+### Changed
+
+- `official/core.yaml` and `official/behavioral.yaml` resynced to be
+  byte-identical to the skill-veil embedded baseline. The embedded copy
+  is the shipping truth (the binary `include_str!`s it and the
+  regression corpus is calibrated against it); the previous repo copies
+  had drifted in metadata/wording only (rule-id sets were already
+  identical). A drift check in skill-veil now keeps the embedded mirror
+  and this canonical source locked.
+
 ## [v0.1.0] — 2026-05-09
 
 ### Added
