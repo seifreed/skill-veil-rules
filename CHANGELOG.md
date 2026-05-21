@@ -32,6 +32,9 @@ All notable changes to the rule packs are recorded here. Format follows
   had drifted in metadata/wording only (rule-id sets were already
   identical). A drift check in skill-veil now keeps the embedded mirror
   and this canonical source locked.
+- PowerShell web request alias matching now uses token boundaries and
+  covers `Invoke-RestMethod` / `irm` in the remote-exec and internal
+  network rules.
 
 ## [v0.1.0] — 2026-05-09
 
