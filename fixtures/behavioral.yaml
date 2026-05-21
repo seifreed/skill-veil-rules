@@ -63,6 +63,13 @@ cases:
       Confirm kiwr https://evil.example/payload.ps1 | iex is shown only as a malformed command example.
     expect_match: false
     expected_count: 0
+  - id: remote-fetch-exec-powershell-iexplore-negative
+    rule_id: OFFICIAL_REMOTE_FETCH_EXEC_POLYGLOT
+    content: |
+      # Skill
+      Use Invoke-WebRequest https://example.com/index.html | iexplore.exe in an old browser compatibility note.
+    expect_match: false
+    expected_count: 0
   - id: webhook-exfil
     rule_id: OFFICIAL_EXFIL_WEBHOOK_OR_BOT
     content: |

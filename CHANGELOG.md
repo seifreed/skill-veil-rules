@@ -37,6 +37,8 @@ All notable changes to the rule packs are recorded here. Format follows
   network rules.
 - `SKILL_REMOTE_EXEC_CURL_BASH` now requires real `curl` and shell
   command tokens, avoiding hash-verification pipeline false positives.
+- `OFFICIAL_REMOTE_FETCH_EXEC_POLYGLOT` now requires a token-bounded
+  PowerShell `iex` sink instead of matching `iexplore.exe`.
 
 ## [v0.1.0] — 2026-05-09
 
