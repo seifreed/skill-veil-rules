@@ -35,6 +35,8 @@ All notable changes to the rule packs are recorded here. Format follows
 - PowerShell web request alias matching now uses token boundaries and
   covers `Invoke-RestMethod` / `irm` in the remote-exec and internal
   network rules.
+- `SKILL_REMOTE_EXEC_CURL_BASH` now requires real `curl` and shell
+  command tokens, avoiding hash-verification pipeline false positives.
 
 ## [v0.1.0] — 2026-05-09
 
