@@ -22,6 +22,15 @@ All notable changes to the rule packs are recorded here. Format follows
   - `SKILL_C2_BEACON_DROPPER` (2-of-3 composite)
   - `LLM_CONSENSUS_PROMPT_INJECTION_SUSPECTED` (synthetic
     cross-provider-flip signal)
+- `taxonomy_tags:` on `official/core.yaml` and `official/behavioral.yaml`
+  rules — the named threat-taxonomy vocabulary (`memory_poisoning`,
+  `rogue_agent`, `excessive_agency`, `output_handling`, `trigger_abuse`,
+  `system_prompt_leakage`). Orthogonal to `category`: surfaced in
+  skill-veil's JSON/SARIF output (`properties.tags`), never feeds verdict
+  scoring. Requires a skill-veil binary that understands the field
+  (the `Rule` schema is `deny_unknown_fields`), so an older binary will
+  reject a pack carrying these tags — release the skill-veil binary that
+  added `TaxonomyTag` before tagging the rules release that ships them.
 
 ### Changed
 
