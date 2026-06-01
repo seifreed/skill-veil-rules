@@ -32,6 +32,15 @@ All notable changes to the rule packs are recorded here. Format follows
   reject a pack carrying these tags — release the skill-veil binary that
   added `TaxonomyTag` before tagging the rules release that ships them.
 
+### Fixed
+
+- `base/obfuscation.yaml` — `SKILL_OBFUSCATION_BASE64` now matches the
+  GNU long flag `base64 --decode` in addition to `-d`/`-D`. Previously
+  `base64 --decode payload.b64 | bash` (long flag + intervening filename)
+  evaded every base64 obfuscation rule: the pipe-adjacent rules require
+  the flag glued to `|`, and this medium safety-net only knew the short
+  flag. Added positive + negative smoke fixtures.
+
 ### Changed
 
 - `official/core.yaml` and `official/behavioral.yaml` resynced to be

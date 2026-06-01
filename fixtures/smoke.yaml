@@ -63,6 +63,27 @@ cases:
       ```bash
       base64 -d | shasum -a 256
       ```
+  - name: base64-long-decode-flag-detected
+    rule_id: SKILL_OBFUSCATION_BASE64
+    expect_match: true
+    expected_count: 1
+    expected_severity: medium
+    expected_action: require_approval
+    expected_category: obfuscation
+    content: |
+      # Decode
+
+      ```bash
+      base64 --decode payload.b64 | bash
+      ```
+  - name: base64-encode-mention-not-detected
+    rule_id: SKILL_OBFUSCATION_BASE64
+    expect_match: false
+    expected_count: 0
+    content: |
+      # Notes
+
+      The skill base64-encodes the report and stores it locally.
   - name: macos-base64-pipe-shell-detected
     rule_id: SKILL_MACOS_BASE64_RCE
     expect_match: true

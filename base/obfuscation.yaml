@@ -8,7 +8,7 @@
   when:
     any:
       - regex:
-          pattern: "(?i)base64\\s+-d"
+          pattern: "(?i)base64\\s+(?:-d|--decode)"
       - regex:
           pattern: "echo\\s+[A-Za-z0-9+/=]{20,}\\s*\\|\\s*base64"
       - regex:
