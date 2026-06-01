@@ -6,6 +6,17 @@ All notable changes to the rule packs are recorded here. Format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- `official/core.yaml` — `SKILL_REMOTE_EXEC_CURL_BASH` now also matches
+  Bash process substitution `bash <(curl …)` and command substitution
+  `bash -c "$(curl …)"` / `eval "$(curl …)"`, not only the `curl … | sh`
+  pipe form. `SKILL_REMOTE_EXEC_POWERSHELL_IEX` now also matches the
+  reverse-order download cradle `iex (irm …)` / `iex(iwr …)`, not only
+  `irm … | iex`.
+- `official/behavioral.yaml` — `OFFICIAL_DESTRUCTIVE_COMMAND_NARRATIVE`
+  now matches the `rm -fr` flag-order swap (was `-rf` only).
+
 ### Added
 
 - `taint/taint.yaml` — the internal source→sink exfiltration pack
