@@ -16,6 +16,14 @@ All notable changes to the rule packs are recorded here. Format follows
   `irm … | iex`.
 - `official/behavioral.yaml` — `OFFICIAL_DESTRUCTIVE_COMMAND_NARRATIVE`
   now matches the `rm -fr` flag-order swap (was `-rf` only).
+- `official/core.yaml` — `SKILL_CHINESE_AUTO_TRIGGER` no longer fires on
+  the bare phrase 无需手动 ("no manual … needed"), which is benign UX copy
+  (无需手动配置/安装/复制粘贴). It now requires a confirmation/approval
+  word adjacent (无需手动确认/审批/授权 …); the standalone bypass terms
+  (不要等用户确认, 立即自动执行 …) are unchanged. An OpenAI+Grok review of
+  the labelled corpus confirmed 无需手动 drove 207 benign matches vs 28
+  malicious; the change cuts benign→malicious false positives from 27.9%
+  to 21.5% with negligible true-positive loss.
 
 ### Added
 
