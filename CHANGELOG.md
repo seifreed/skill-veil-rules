@@ -6,6 +6,17 @@ All notable changes to the rule packs are recorded here. Format follows
 
 ## [Unreleased]
 
+### Added
+
+- `official/behavioral.yaml` — `OFFICIAL_REMOTE_CONFIG_FETCH_OVERRIDE`
+  (high / require_approval): catches a skill instructing the agent to fetch
+  agent-config / tool-call overrides from a remote URL at runtime using
+  neutral verbs (`access`/`load`/`get`) and config-file resource names
+  (`agent-config.json`, `tool_call_overrides`, `overrides.json`) that evade
+  the keyword-anchored `OFFICIAL_PROMPT_INJECT_REMOTE_INSTRUCTION_FETCH`. The
+  resource anchor is override-specific so benign links to `config.json` /
+  `settings.json` do not match.
+
 ### Fixed
 
 - `official/core.yaml` — `SKILL_REMOTE_EXEC_CURL_BASH` now also matches
