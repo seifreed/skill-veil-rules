@@ -19,6 +19,16 @@ All notable changes to the rule packs are recorded here. Format follows
 
 ### Fixed
 
+- `official/behavioral.yaml` — `OFFICIAL_REMOTE_FETCH_EXEC_POLYGLOT`
+  fetch-side alternation now covers the modern Python HTTP clients
+  `httpx` (`httpx.get/post/put/patch/delete/request/stream/Client/AsyncClient(`)
+  and `aiohttp` (`aiohttp.ClientSession(` / `aiohttp.request(`). Previously
+  only `requests.get(` / `urllib.request.urlopen(` were matched, so a
+  `httpx.get(url).text` → `exec(...)` or `aiohttp.ClientSession()` →
+  `exec(await r.text())` download-and-run cradle evaded the rule even
+  though the same libraries were already covered by the SSRF and
+  secret-exfil egress vocabularies. Positive fixtures added for both
+  clients plus a benign-httpx negative.
 - `official/core.yaml` — `SKILL_REMOTE_EXEC_CURL_BASH` now also matches
   Bash process substitution `bash <(curl …)` and command substitution
   `bash -c "$(curl …)"` / `eval "$(curl …)"`, not only the `curl … | sh`
