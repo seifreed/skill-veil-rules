@@ -8,6 +8,14 @@ All notable changes to the rule packs are recorded here. Format follows
 
 ### Added
 
+- `official/supplementary.yaml` — new official pack with 108 `SKILL_*` rules
+  (credential exposure, data exfiltration, remote exec, supply chain,
+  obfuscation, scope creep, autonomy escalation, persistence, social
+  manipulation, …). These previously shipped only embedded in the
+  `skill-veil` binary (`src/builtin_rules.yaml`); they are now distributable
+  and versioned via `skill-veil init`. `fixtures/supplementary.yaml` adds
+  positive + negative coverage for the `remote_exec` set; coverage for the
+  remaining categories is a follow-up.
 - `official/behavioral.yaml` — `OFFICIAL_REMOTE_CONFIG_FETCH_OVERRIDE`
   (high / require_approval): catches a skill instructing the agent to fetch
   agent-config / tool-call overrides from a remote URL at runtime using
