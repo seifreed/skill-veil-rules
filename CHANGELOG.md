@@ -6,6 +6,8 @@ All notable changes to the rule packs are recorded here. Format follows
 
 ## [Unreleased]
 
+## [v0.1.1] - 2026-06-30
+
 ### Added
 
 - `official/supplementary.yaml` — new official pack with 108 `SKILL_*` rules
